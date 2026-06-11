@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
 import { Camera, MapPin, Clock, Phone, Video, Menu, X } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
@@ -114,14 +114,68 @@ function Home() {
       </nav>
 
       {/* Mobile Menu Overlay */}
-      {mobileMenuOpen && (
-        <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', background: 'rgba(61, 35, 20, 0.95)', zIndex: 99, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '2rem' }}>
-          <a href="#vibe" style={{ color: 'white', fontSize: '2rem' }} onClick={() => setMobileMenuOpen(false)}>The Vibe</a>
-          <Link to="/gallery" style={{ color: 'white', fontSize: '2rem' }} onClick={() => setMobileMenuOpen(false)}>Gallery</Link>
-          <Link to="/menu" style={{ color: 'white', fontSize: '2rem' }} onClick={() => setMobileMenuOpen(false)}>Menu</Link>
-          <a href="#visit" style={{ color: 'white', fontSize: '2rem' }} onClick={() => setMobileMenuOpen(false)}>Visit Us</a>
-        </div>
-      )}
+      <AnimatePresence>
+        {mobileMenuOpen && (
+          <motion.div 
+            initial={{ opacity: 0, backdropFilter: 'blur(0px)' }}
+            animate={{ opacity: 1, backdropFilter: 'blur(10px)' }}
+            exit={{ opacity: 0, backdropFilter: 'blur(0px)' }}
+            style={{ 
+              position: 'fixed', 
+              top: 0, 
+              left: 0, 
+              width: '100%', 
+              height: '100vh', 
+              background: 'rgba(20, 10, 5, 0.95)', 
+              zIndex: 99, 
+              display: 'flex', 
+              flexDirection: 'column', 
+              alignItems: 'center', 
+              justifyContent: 'center', 
+              gap: '2.5rem' 
+            }}
+          >
+            {[
+              { label: 'The Vibe', to: '#vibe', isScroll: true },
+              { label: 'Gallery', to: '/gallery', isScroll: false },
+              { label: 'Menu', to: '/menu', isScroll: false },
+              { label: 'Visit Us', to: '#visit', isScroll: true },
+            ].map((link, idx) => (
+              <motion.div
+                key={link.label}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 20 }}
+                transition={{ delay: 0.1 * idx }}
+              >
+                {link.isScroll ? (
+                  <a href={link.to} 
+                     style={{ color: 'var(--color-gold-light)', fontSize: '2.5rem', fontFamily: 'var(--font-serif)', textDecoration: 'none', letterSpacing: '2px', fontWeight: '300' }} 
+                     onClick={() => setMobileMenuOpen(false)}>
+                    {link.label}
+                  </a>
+                ) : (
+                  <Link to={link.to} 
+                     style={{ color: 'var(--color-gold-light)', fontSize: '2.5rem', fontFamily: 'var(--font-serif)', textDecoration: 'none', letterSpacing: '2px', fontWeight: '300' }} 
+                     onClick={() => setMobileMenuOpen(false)}>
+                    {link.label}
+                  </Link>
+                )}
+              </motion.div>
+            ))}
+            
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ delay: 0.4 }}
+              style={{ marginTop: '2rem' }}
+            >
+              <img src="/assets/logo.jpg" alt="The Cafe Lakeside Logo" style={{ width: '80px', height: '80px', borderRadius: '50%', border: '2px solid var(--color-gold)', objectFit: 'cover' }} />
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Hero Section */}
       <section className="hero-section">
@@ -292,6 +346,13 @@ function Home() {
           })}
           </motion.div>
         </div>
+        <motion.div 
+          initial={{ opacity: 0 }} 
+          whileInView={{ opacity: 1 }} 
+          style={{ textAlign: 'center', marginTop: '3rem' }}
+        >
+          <a href="https://www.instagram.com/cafelakesidenainital?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" rel="noreferrer" className="btn-primary" style={{ textDecoration: 'none', display: 'inline-block' }}>View More on Instagram</a>
+        </motion.div>
       </section>
 
       {/* Signature Plates Preview */}
