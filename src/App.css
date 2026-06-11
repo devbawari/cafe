@@ -393,7 +393,12 @@
 }
 
 @media (max-width: 900px) {
-  .hero-title { font-size: 2.5rem; }
+  .navbar { padding: 1rem; }
+  .nav-logo span { font-size: 1rem !important; letter-spacing: 1px !important; }
+  .nav-logo img { width: 35px !important; height: 35px !important; }
+  .hero-content { margin-top: 6rem; padding: 1rem; }
+  
+  .hero-title { font-size: 2.2rem; }
   .experience-split { flex-direction: column; }
   .footer-grid { grid-template-columns: 1fr; }
   .nav-links { display: none; }
